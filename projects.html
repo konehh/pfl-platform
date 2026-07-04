@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>PFL — Projects</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
+body{font-family:Inter,sans-serif;background:#f4f5f7;color:#1a1d29;font-size:13px;overflow-x:hidden;}
+
+/* ── LAYOUT ── */
+.layout{display:block;min-height:100vh;}
+
+/* ── SIDEBAR ── */
+.sb{position:fixed;top:0;left:0;bottom:0;width:200px;background:#ffffff;border-right:1px solid #e8eaf0;display:flex;flex-direction:column;z-index:100;}
+.sb-logo{padding:14px 16px;border-bottom:1px solid #e8eaf0;flex-shrink:0;}
+.sb-mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#4f7cff,#9b6dff);display:flex;align-items:center;justify-content:center;margin-bottom:8px;}
+.sb-mark svg{width:16px;height:16px;fill:none;stroke:#fff;stroke-width:2;}
+.sb-brand{font-family:Sora,sans-serif;font-size:14px;font-weight:700;color:#1a1d29;}
+.sb-tagline{font-size:10px;color:#9498ab;margin-top:1px;}
+.sb-nav{flex:1;overflow-y:auto;padding:0;}
+.sb-item{display:flex;align-items:center;gap:9px;padding:9px 16px;font-size:13px;color:#5b6075;cursor:pointer;border-bottom:1px solid #f0f1f5;transition:background .12s;text-decoration:none;}
+.sb-item:first-child{border-top:1px solid #f0f1f5;}
+.sb-item:hover{background:#f5f6ff;color:#1a1d29;}
+.sb-item.active{background:#eef2ff;color:#2950d4;font-weight:600;border-left:3px solid #4f7cff;padding-left:13px;}
+.sb-item svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0;opacity:.75;}
+.sb-item.active svg{opacity:1;}
+.sb-foot{padding:14px;border-top:1px solid #e8eaf0;flex-shrink:0;}
+.sb-unlock{background:linear-gradient(135deg,#eef2ff,#f4eeff);border:1px solid #dde3ff;border-radius:10px;padding:12px;}
+.sb-unlock h4{font-size:12px;font-weight:600;color:#1a1d29;margin-bottom:3px;}
+.sb-unlock p{font-size:10.5px;color:#5b6075;margin-bottom:10px;line-height:1.5;}
+.sb-unlock-btn{width:100%;padding:7px;background:#4f7cff;color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;display:flex;align-items:center;justify-content:center;gap:5px;}
+
+/* ── RIGHT COLUMN ── */
+.right-col{margin-left:200px;display:flex;flex-direction:column;min-height:100vh;}
+
+/* ── TOP NAV ── */
+.tn{background:#ffffff;border-bottom:1px solid #e8eaf0;height:48px;display:flex;align-items:center;padding:0 32px;position:sticky;top:0;z-index:99;flex-shrink:0;}
+.tn-links{display:flex;align-items:center;justify-content:center;gap:40px;flex:1;}
+.tn-link{font-size:13.5px;color:#5b6075;cursor:pointer;font-weight:500;letter-spacing:.01em;}
+.tn-link:hover{color:#1a1d29;}
+.tn-actions{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.tn-btn-sec{padding:6px 18px;border:1px solid #dde3ff;border-radius:20px;font-size:12.5px;color:#1a1d29;background:transparent;cursor:pointer;font-family:Inter,sans-serif;font-weight:500;}
+.tn-btn-pri{padding:6px 18px;border:none;border-radius:20px;font-size:12.5px;color:#fff;background:#4f7cff;cursor:pointer;font-family:Inter,sans-serif;font-weight:600;}
+
+/* ── SEARCH BAR ── */
+.search-row{background:#f9fafc;border-bottom:1px solid #e8eaf0;padding:8px 20px;display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.search-inner{position:relative;flex:1;}
+.search-inner svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:#9498ab;fill:none;stroke-width:2;}
+.search-inner input{width:100%;height:32px;background:#fff;border:1px solid #e2e5f5;border-radius:20px;padding:0 14px 0 34px;font-size:12.5px;color:#1a1d29;font-family:Inter,sans-serif;outline:none;}
+.search-inner input::placeholder{color:#9498ab;}
+
+/* ── TICKER ── */
+.ticker{background:#f0f4ff;border-bottom:1px solid #dde3ff;height:28px;display:flex;align-items:center;overflow:hidden;flex-shrink:0;}
+.ticker-lbl{background:#f0f4ff;display:flex;align-items:center;gap:5px;padding:0 12px 0 16px;height:100%;flex-shrink:0;border-right:1px solid #dde3ff;z-index:2;}
+.ticker-lbl::before{content:'';width:5px;height:5px;border-radius:50%;background:#2bb673;flex-shrink:0;animation:blink 2s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.2;}}
+.ticker-lbl span{font-size:9.5px;font-weight:700;color:#2950d4;letter-spacing:.07em;text-transform:uppercase;}
+.ticker-outer{flex:1;overflow:hidden;position:relative;}
+.ticker-track{display:flex;animation:tscroll 55s linear infinite;white-space:nowrap;}
+.ticker-track:hover{animation-play-state:paused;}
+@keyframes tscroll{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+.ti{font-size:11px;color:#5b6075;padding:0 24px;display:flex;align-items:center;gap:5px;}
+.ti-plus{color:#2bb673;font-weight:700;margin-right:2px;}
+
+/* ── MAIN ── */
+.main{padding:16px 20px;display:flex;flex-direction:column;gap:14px;flex:1;}
+
+/* ── PAGE HEADER ── */
+.page-hdr{display:flex;align-items:flex-start;justify-content:space-between;}
+.ph-left .ph-module{font-size:10.5px;font-weight:700;color:#9498ab;text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px;}
+.ph-left h1{font-family:Sora,sans-serif;font-size:22px;font-weight:700;color:#1a1d29;line-height:1.2;}
+.ph-left p{font-size:12.5px;color:#5b6075;margin-top:4px;}
+.ph-actions{display:flex;gap:8px;align-items:center;}
+.ph-btn{display:flex;align-items:center;gap:5px;padding:6px 13px;border:1px solid #e2e5f5;border-radius:8px;font-size:12px;color:#1a1d29;background:#fff;cursor:pointer;font-family:Inter,sans-serif;font-weight:500;}
+.ph-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;}
+.ph-btn-pri{background:#4f7cff;color:#fff;border-color:#4f7cff;}
+
+/* ── KPI ROW ── */
+.kpi-row{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;}
+.kpi{background:#fff;border:1px solid #e8eaf0;border-radius:12px;padding:14px 16px;position:relative;overflow:hidden;box-shadow:0 1px 3px rgba(26,29,41,.03);}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:12px 12px 0 0;}
+.kpi-b::before{background:#4f7cff;}
+.kpi-g::before{background:#2bb673;}
+.kpi-p::before{background:#9b6dff;}
+.kpi-a::before{background:#e0922f;}
+.kpi-lbl{font-size:10px;font-weight:700;color:#9498ab;text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;}
+.kpi-val{font-family:Sora,sans-serif;font-size:22px;font-weight:700;color:#1a1d29;line-height:1;}
+.kpi-sub{font-size:10px;color:#9498ab;margin-top:4px;}
+
+/* ── THREE PANELS ── */
+.panels{display:grid;grid-template-columns:220px minmax(0,1fr) 228px;gap:14px;}
+.panel{background:#fff;border:1px solid #e8eaf0;border-radius:12px;padding:16px;box-shadow:0 1px 3px rgba(26,29,41,.03);}
+.panel-title{font-size:10.5px;font-weight:700;color:#1a1d29;text-transform:uppercase;letter-spacing:.07em;margin-bottom:14px;}
+
+/* Pipeline */
+.donut-wrap{display:flex;justify-content:center;margin-bottom:14px;}
+.pip-row{display:flex;align-items:center;justify-content:space-between;padding:5px 0;}
+.pip-lbl{display:flex;align-items:center;gap:7px;font-size:12px;color:#5b6075;}
+.pip-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.pip-val{font-size:12px;font-weight:600;color:#1a1d29;}
+.pip-bar{height:3px;border-radius:2px;margin:3px 0 8px;}
+
+/* Map */
+.map-box{background:#eef2ff;border-radius:8px;overflow:hidden;border:1px solid #e2e5f5;width:100%;height:220px;}
+.map-box svg{width:100%;height:100%;display:block;}
+.map-legend{display:flex;gap:14px;margin-top:9px;flex-wrap:wrap;}
+.ml-item{display:flex;align-items:center;gap:5px;font-size:10.5px;color:#5b6075;}
+.ml-dot{width:8px;height:8px;border-radius:50%;}
+
+/* Top Projects */
+.proj-item{display:flex;align-items:flex-start;gap:9px;padding:9px 0;border-bottom:1px solid #f0f1f5;}
+.proj-item:last-child{border-bottom:none;padding-bottom:0;}
+.proj-rank{font-family:Sora,sans-serif;font-size:12px;font-weight:700;color:#9498ab;min-width:16px;margin-top:1px;}
+.proj-body{flex:1;min-width:0;}
+.proj-name{font-size:12px;font-weight:600;color:#1a1d29;line-height:1.3;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.proj-tags{display:flex;gap:4px;margin-bottom:3px;flex-wrap:wrap;}
+.ptag{font-size:9.5px;padding:2px 6px;border-radius:4px;font-weight:600;}
+.pt-b{background:#eef2ff;color:#2950d4;}
+.pt-g{background:#e8f7f0;color:#1a8a55;}
+.pt-a{background:#fdf3e3;color:#b5701a;}
+.pt-p{background:#f4eeff;color:#6f42cc;}
+.proj-cap{font-size:10px;color:#9498ab;}
+
+/* ── ACTION ROW ── */
+.action-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;}
+.ac{background:#fff;border:1px solid #e8eaf0;border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:11px;cursor:pointer;transition:border-color .15s,box-shadow .15s;box-shadow:0 1px 3px rgba(26,29,41,.03);}
+.ac:hover{border-color:#4f7cff;box-shadow:0 2px 8px rgba(79,124,255,.12);}
+.ac-icon{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ac-icon svg{width:18px;height:18px;fill:none;stroke-width:2;}
+.ac-title{font-size:12.5px;font-weight:600;color:#1a1d29;margin-bottom:2px;display:flex;align-items:center;gap:6px;}
+.ac-badge{background:#4f7cff;color:#fff;border-radius:10px;font-size:9px;font-weight:700;padding:1px 7px;}
+.ac-sub{font-size:10.5px;color:#9498ab;}
+
+/* ── TRUSTED ── */
+.trusted{background:#fff;border:1px solid #e8eaf0;border-radius:12px;padding:14px 24px;box-shadow:0 1px 3px rgba(26,29,41,.03);}
+.tr-lbl{font-size:10px;font-weight:700;color:#9498ab;text-align:center;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;}
+.tr-logos{display:flex;align-items:center;justify-content:center;gap:32px;flex-wrap:wrap;}
+.tr-logo{font-family:Sora,sans-serif;font-size:12px;font-weight:700;color:#9498ab;letter-spacing:.05em;opacity:.45;}
+</style>
+</head>
+<body>
+<div class="layout">
+
+<!-- SIDEBAR -->
+<aside class="sb">
+  <div class="sb-logo">
+    <div class="sb-mark">
+      <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+    </div>
+    <div class="sb-brand">PFL</div>
+    <div class="sb-tagline">Project Finance Library</div>
+  </div>
+  <nav class="sb-nav">
+    <a class="sb-item" href="index.html">
+      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Home
+    </a>
+    <a class="sb-item active" href="projects.html">
+      <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>Projects
+    </a>
+    <a class="sb-item" href="#">
+      <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>Companies
+    </a>
+    <a class="sb-item" href="#">
+      <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>Assets
+    </a>
+    <a class="sb-item" href="#">
+      <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>Fuels
+    </a>
+    <a class="sb-item" href="#">
+      <svg viewBox="0 0 24 24"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>Supply chain
+    </a>
+    <a class="sb-item" href="#">
+      <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Markets
+    </a>
+    <a class="sb-item" href="#">
+      <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Analytics
+    </a>
+    <a class="sb-item" href="#">
+      <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Scenarios
+    </a>
+    <a class="sb-item" href="#">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>Map
+    </a>
+    <a class="sb-item" href="#">
+      <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>News and insights
+    </a>
+    <a class="sb-item" href="#">
+      <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>Watchlists
+    </a>
+    <a class="sb-item" href="#">
+      <svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>Datasets
+    </a>
+  </nav>
+  <div class="sb-foot">
+    <div class="sb-unlock">
+      <h4>Unlock full access</h4>
+      <p>Deep data. Powerful tools. Smarter decisions.</p>
+      <button class="sb-unlock-btn">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Request access
+      </button>
+    </div>
+  </div>
+</aside>
+
+<!-- RIGHT COLUMN -->
+<div class="right-col">
+
+  <!-- TOP NAV -->
+  <nav class="tn">
+    <div class="tn-links">
+      <span class="tn-link">About</span>
+      <span class="tn-link">Insights</span>
+      <span class="tn-link">Contact</span>
+    </div>
+    <div class="tn-actions">
+      <button class="tn-btn-sec">Log in</button>
+      <button class="tn-btn-pri">Request access</button>
+    </div>
+  </nav>
+
+  <!-- SEARCH -->
+  <div class="search-row">
+    <div class="search-inner">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" placeholder="Search projects, companies, assets, fuels, regions…"/>
+    </div>
+  </div>
+
+  <!-- TICKER -->
+  <div class="ticker">
+    <div class="ticker-lbl"><span>Latest</span></div>
+    <div class="ticker-outer">
+      <div class="ticker-track">
+        <span class="ti"><span class="ti-plus">+</span>Northern Lights e-Methanol project reaches FID</span>
+        <span class="ti"><span class="ti-plus">+</span>€820M debt facility announced for green ammonia plant</span>
+        <span class="ti"><span class="ti-plus">+</span>MOL signs long-term offtake agreement for e-methanol</span>
+        <span class="ti"><span class="ti-plus">+</span>FuelEU pooling demand expected to rise 23% by 2030</span>
+        <span class="ti"><span class="ti-plus">+</span>New ammonia terminal approved in Rotterdam</span>
+        <span class="ti"><span class="ti-plus">+</span>Yara and European Energy expand green ammonia partnership</span>
+        <span class="ti"><span class="ti-plus">+</span>$1.4B hydrogen hub reaches financial close in Louisiana</span>
+        <span class="ti"><span class="ti-plus">+</span>IMO GHG framework update expected Q3 2025</span>
+        <span class="ti"><span class="ti-plus">+</span>Northern Lights e-Methanol project reaches FID</span>
+        <span class="ti"><span class="ti-plus">+</span>€820M debt facility announced for green ammonia plant</span>
+        <span class="ti"><span class="ti-plus">+</span>MOL signs long-term offtake agreement for e-methanol</span>
+        <span class="ti"><span class="ti-plus">+</span>FuelEU pooling demand expected to rise 23% by 2030</span>
+        <span class="ti"><span class="ti-plus">+</span>New ammonia terminal approved in Rotterdam</span>
+        <span class="ti"><span class="ti-plus">+</span>Yara and European Energy expand green ammonia partnership</span>
+        <span class="ti"><span class="ti-plus">+</span>$1.4B hydrogen hub reaches financial close in Louisiana</span>
+        <span class="ti"><span class="ti-plus">+</span>IMO GHG framework update expected Q3 2025</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- PAGE HEADER -->
+    <div class="page-hdr">
+      <div class="ph-left">
+        <div class="ph-module">Module 1</div>
+        <h1>Projects</h1>
+        <p>Track and explore global energy transition projects.</p>
+      </div>
+      <div class="ph-actions">
+        <button class="ph-btn">
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Export
+        </button>
+        <button class="ph-btn">
+          <svg viewBox="0 0 24 24"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+          Filter
+        </button>
+        <button class="ph-btn ph-btn-pri">
+          <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Add project
+        </button>
+      </div>
+    </div>
+
+    <!-- KPI ROW -->
+    <div class="kpi-row">
+      <div class="kpi kpi-b">
+        <div class="kpi-lbl">Total projects</div>
+        <div class="kpi-val">2,843</div>
+        <div class="kpi-sub">Across 63 countries</div>
+      </div>
+      <div class="kpi kpi-g">
+        <div class="kpi-lbl">Total capacity</div>
+        <div class="kpi-val">48.7 Mtpa</div>
+        <div class="kpi-sub">Combined nameplate</div>
+      </div>
+      <div class="kpi kpi-p">
+        <div class="kpi-lbl">Total investment</div>
+        <div class="kpi-val">$312B</div>
+        <div class="kpi-sub">Committed capital</div>
+      </div>
+      <div class="kpi kpi-a">
+        <div class="kpi-lbl">Under construction</div>
+        <div class="kpi-val">237</div>
+        <div class="kpi-sub">Active build phase</div>
+      </div>
+      <div class="kpi kpi-g">
+        <div class="kpi-lbl">Operational</div>
+        <div class="kpi-val">156</div>
+        <div class="kpi-sub">Producing now</div>
+      </div>
+    </div>
+
+    <!-- THREE PANELS -->
+    <div class="panels">
+
+      <!-- Pipeline -->
+      <div class="panel">
+        <div class="panel-title">Project pipeline</div>
+        <div class="donut-wrap">
+          <svg width="120" height="120" viewBox="0 0 120 120">
+            <circle cx="60" cy="60" r="44" fill="none" stroke="#f0f1f5" stroke-width="20"/>
+            <circle cx="60" cy="60" r="44" fill="none" stroke="#9b6dff" stroke-width="20"
+              stroke-dasharray="121.7 276.5" stroke-dashoffset="0" transform="rotate(-90 60 60)"/>
+            <circle cx="60" cy="60" r="44" fill="none" stroke="#4f7cff" stroke-width="20"
+              stroke-dasharray="71.8 276.5" stroke-dashoffset="-121.7" transform="rotate(-90 60 60)"/>
+            <circle cx="60" cy="60" r="44" fill="none" stroke="#e0922f" stroke-width="20"
+              stroke-dasharray="41.1 276.5" stroke-dashoffset="-193.5" transform="rotate(-90 60 60)"/>
+            <circle cx="60" cy="60" r="44" fill="none" stroke="#2bb673" stroke-width="20"
+              stroke-dasharray="15.2 276.5" stroke-dashoffset="-234.6" transform="rotate(-90 60 60)"/>
+            <text x="60" y="55" text-anchor="middle" font-family="Sora,sans-serif" font-size="16" font-weight="700" fill="#1a1d29">2,843</text>
+            <text x="60" y="68" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#9498ab">total projects</text>
+          </svg>
+        </div>
+        <div class="pip-row">
+          <div class="pip-lbl"><span class="pip-dot" style="background:#9b6dff"></span>Announced</div>
+          <div class="pip-val">1,246</div>
+        </div>
+        <div class="pip-bar" style="width:100%;background:#f0f1f5">
+          <div style="height:3px;width:44%;background:#9b6dff;border-radius:2px;"></div>
+        </div>
+        <div class="pip-row">
+          <div class="pip-lbl"><span class="pip-dot" style="background:#4f7cff"></span>Feasibility</div>
+          <div class="pip-val">812</div>
+        </div>
+        <div class="pip-bar" style="width:100%;background:#f0f1f5">
+          <div style="height:3px;width:29%;background:#4f7cff;border-radius:2px;"></div>
+        </div>
+        <div class="pip-row">
+          <div class="pip-lbl"><span class="pip-dot" style="background:#e0922f"></span>FID / committed</div>
+          <div class="pip-val">421</div>
+        </div>
+        <div class="pip-bar" style="width:100%;background:#f0f1f5">
+          <div style="height:3px;width:15%;background:#e0922f;border-radius:2px;"></div>
+        </div>
+        <div class="pip-row">
+          <div class="pip-lbl"><span class="pip-dot" style="background:#2bb673"></span>Operational</div>
+          <div class="pip-val">156</div>
+        </div>
+        <div class="pip-bar" style="width:100%;background:#f0f1f5;margin-bottom:0">
+          <div style="height:3px;width:6%;background:#2bb673;border-radius:2px;"></div>
+        </div>
+      </div>
+
+      <!-- Map -->
+      <div class="panel">
+        <div class="panel-title">Projects by location</div>
+        <div class="map-box">
+          <svg viewBox="0 0 900 420" xmlns="http://www.w3.org/2000/svg">
+            <rect width="900" height="420" fill="#dde8f8"/>
+            <!-- grid lines -->
+            <line x1="0" y1="140" x2="900" y2="140" stroke="#c8d9f0" stroke-width="0.5"/>
+            <line x1="0" y1="210" x2="900" y2="210" stroke="#c8d9f0" stroke-width="0.5"/>
+            <line x1="0" y1="280" x2="900" y2="280" stroke="#c8d9f0" stroke-width="0.5"/>
+            <line x1="225" y1="0" x2="225" y2="420" stroke="#c8d9f0" stroke-width="0.5"/>
+            <line x1="450" y1="0" x2="450" y2="420" stroke="#c8d9f0" stroke-width="0.5"/>
+            <line x1="675" y1="0" x2="675" y2="420" stroke="#c8d9f0" stroke-width="0.5"/>
+            <!-- North America -->
+            <path fill="#b8cce8" stroke="#dde8f8" stroke-width="0.8" d="M52,48 L68,40 L86,42 L102,52 L112,66 L115,82 L110,98 L100,112 L88,122 L74,128 L60,122 L48,110 L40,94 L38,76 L42,60 Z"/>
+            <path fill="#b8cce8" stroke="#dde8f8" stroke-width="0.8" d="M36,44 L48,38 L56,44 L54,56 L44,60 L34,54 Z"/>
+            <path fill="#b8cce8" stroke="#dde8f8" stroke-width="0.8" d="M102,54 L138,46 L148,54 L152,68 L146,84 L132,94 L116,96 L104,86 L98,70 Z"/>
+            <path fill="#b8cce8" stroke="#dde8f8" stroke-width="0.8" d="M112,98 L124,104 L128,120 L122,136 L110,142 L98,134 L94,118 L100,104 Z"/>
+            <path fill="#b8cce8" stroke="#dde8f8" stroke-width="0.8" d="M120,148 L136,154 L148,172 L152,196 L148,220 L138,240 L124,252 L108,256 L94,248 L84,232 L80,210 L82,188 L90,168 L104,154 Z"/>
+            <path fill="#b8cce8" stroke="#dde8f8" stroke-width="0.8" d="M140,34 L154,28 L166,32 L172,44 L168,56 L156,62 L144,56 Z"/>
+            <!-- Europe -->
+            <path fill="#b8cce8" stroke="#dde8f8" stroke-width="0.8" d="M234,44 L248,36 L260,40 L268,52 L265,64 L252,70 L240,64 Z"/>
+            <path fill="#b8cce8" stroke="#dde8f8" stroke-width="0.8" d="M248,68 L278,60 L306,64 L322,76 L326,92 L318,108 L300,116 L280,118 L260,112 L246,98 L242,82 Z"/>
+            <path fill="#b8cce8" stroke="#dde8f8" stroke-width="0.8" d="M290,118 L304,124 L308,140 L300,152 L286,156 L272,148 L268,132 L276,120 Z"/>
+            <path fill="#b8cce8" stroke="#dde8f8" stroke-width="0.8" d="M260,116 L276,120 L280,138 L272,152 L258,156 L244,146 L240,130 Z"/>
+            <!-- Russia -->
+            <path fill="#b8cce8" stroke="#dde8f8" stroke-width="0.8" d="M326,38 L360,28 L408,24 L458,22 L510,24 L558,30 L600,40 L636,54 L658,70 L664,88 L654,106 L634,118 L606,126 L572,128 L536,124 L500,116 L466,106 L432,94 L398,80 L366,66 L340,52 Z"/>
+            <!-- Africa -->
+            <path fill="#b8cce8" stroke="#dde8f8" stroke-width="0.8" d="M246,160 L268,154 L292,156 L312,168 L324,186 L328,208 L324,232 L314,256 L298,276 L278,290 L256,296 L234,290 L214,274 L200,252 L194,226 L196,200 L204,176 L220,162 Z"/>
+            <!-- Middle East -->
+            <path fill="#b8cce8" stroke="#dde8f8" stroke-width="0.8" d="M330,120 L354,114 L376,118 L394,132 L398,150 L390,168 L372,178 L350,180 L330,168 L318,150 L320,132 Z"/>
+            <path fill="#b8cce8" stroke="#dde8f8" stroke-width="0.8" d="M352,180 L372,176 L388,184 L394,202 L388,222 L374,232 L356,232 L340,220 L334,200 Z"/>
+            <!-- India -->
+            <path fill="#b8cce8" stroke="#dde8f8" stroke-width="0.8" d="M480,128 L502,122 L520,130 L530,148 L528,170 L516,188 L498,198 L480,196 L464,182 L458,162 L462,142 Z"/>
+            <path fill="#b8cce8" stroke="#dde8f8" stroke-width="0.8" d="M494,200 L500,208 L496,218 L488,216 L486,206 Z"/>
+            <!-- Central Asia -->
+            <path fill="#b8cce8" stroke="#dde8f8" stroke-width="0.8" d="M398,100 L430,94 L464,98 L488,110 L494,128 L480,140 L456,144 L428,138 L404,124 L396,108 Z"/>
+            <!-- China -->
+            <path fill="#b8cce8" stroke="#dde8f8" stroke-width="0.8" d="M540,90 L578,82 L618,86 L648,98 L664,118 L662,140 L644,156 L618,164 L588,166 L558,158 L534,142 L522,122 L524,104 Z"/>
+            <!-- SE Asia -->
+            <path fill="#b8cce8" stroke="#dde8f8" stroke-width="0.8" d="M594,168 L616,162 L634,170 L638,188 L626,202 L608,206 L592,196 Z"/>
+            <path fill="#b8cce8" stroke="#dde8f8" stroke-width="0.8" d="M616,202 L634,196 L648,206 L648,224 L634,232 L618,228 Z"/>
+            <path fill="#b8cce8" stroke="#dde8f8" stroke-width="0.8" d="M640,186 L658,180 L672,188 L674,206 L660,214 L644,208 Z"/>
+            <!-- Japan / Korea -->
+            <path fill="#b8cce8" stroke="#dde8f8" stroke-width="0.8" d="M660,96 L672,90 L682,96 L682,110 L670,116 L660,108 Z"/>
+            <path fill="#b8cce8" stroke="#dde8f8" stroke-width="0.8" d="M670,116 L682,110 L692,118 L690,132 L678,136 L668,128 Z"/>
+            <path fill="#b8cce8" stroke="#dde8f8" stroke-width="0.8" d="M686,110 L696,104 L706,110 L706,124 L694,128 L684,120 Z"/>
+            <!-- Australia -->
+            <path fill="#b8cce8" stroke="#dde8f8" stroke-width="0.8" d="M620,282 L652,272 L686,270 L718,276 L742,292 L754,314 L750,338 L734,356 L710,366 L684,368 L658,360 L636,344 L620,322 L612,298 Z"/>
+            <!-- Madagascar -->
+            <path fill="#b8cce8" stroke="#dde8f8" stroke-width="0.8" d="M338,252 L346,242 L354,248 L354,266 L346,276 L336,270 Z"/>
+
+            <!-- PROJECT CLUSTER BUBBLES -->
+            <!-- Europe cluster -->
+            <circle cx="278" cy="88" r="18" fill="#e0922f" opacity="0.85"/>
+            <text x="278" y="92" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="700" fill="white">486</text>
+            <circle cx="262" cy="78" r="8" fill="#e0922f" opacity="0.6"/>
+            <circle cx="296" cy="82" r="6" fill="#e0922f" opacity="0.55"/>
+            <circle cx="265" cy="98" r="5" fill="#e0922f" opacity="0.5"/>
+            <circle cx="300" cy="95" r="5" fill="#e0922f" opacity="0.5"/>
+
+            <!-- Middle East cluster -->
+            <circle cx="362" cy="148" r="16" fill="#e0922f" opacity="0.9"/>
+            <text x="362" y="152" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="700" fill="white">342</text>
+            <circle cx="345" cy="138" r="7" fill="#e0922f" opacity="0.62"/>
+            <circle cx="380" cy="142" r="6" fill="#e0922f" opacity="0.58"/>
+            <circle cx="350" cy="160" r="5" fill="#e0922f" opacity="0.5"/>
+            <circle cx="375" cy="158" r="5" fill="#e0922f" opacity="0.5"/>
+
+            <!-- Asia cluster -->
+            <circle cx="582" cy="120" r="16" fill="#e0922f" opacity="0.88"/>
+            <text x="582" y="124" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="700" fill="white">618</text>
+            <circle cx="562" cy="110" r="7" fill="#e0922f" opacity="0.62"/>
+            <circle cx="602" cy="112" r="6" fill="#e0922f" opacity="0.58"/>
+            <circle cx="566" cy="132" r="5" fill="#e0922f" opacity="0.5"/>
+            <circle cx="598" cy="132" r="5" fill="#e0922f" opacity="0.5"/>
+
+            <!-- North America cluster -->
+            <circle cx="96" cy="78" r="14" fill="#e0922f" opacity="0.82"/>
+            <text x="96" y="82" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="700" fill="white">412</text>
+            <circle cx="80" cy="68" r="6" fill="#e0922f" opacity="0.58"/>
+            <circle cx="114" cy="70" r="5" fill="#e0922f" opacity="0.54"/>
+            <circle cx="84" cy="90" r="5" fill="#e0922f" opacity="0.5"/>
+
+            <!-- South America cluster -->
+            <circle cx="118" cy="210" r="10" fill="#e0922f" opacity="0.72"/>
+            <text x="118" y="214" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="700" fill="white">128</text>
+            <circle cx="104" cy="222" r="5" fill="#e0922f" opacity="0.48"/>
+
+            <!-- Africa cluster -->
+            <circle cx="270" cy="228" r="10" fill="#e0922f" opacity="0.72"/>
+            <text x="270" y="232" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="700" fill="white">196</text>
+            <circle cx="255" cy="240" r="5" fill="#e0922f" opacity="0.48"/>
+            <circle cx="285" cy="240" r="4" fill="#e0922f" opacity="0.44"/>
+
+            <!-- Australia cluster -->
+            <circle cx="684" cy="318" r="10" fill="#e0922f" opacity="0.72"/>
+            <text x="684" y="322" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="700" fill="white">86</text>
+            <circle cx="668" cy="330" r="4" fill="#e0922f" opacity="0.44"/>
+
+            <!-- Pulse rings on major clusters -->
+            <circle cx="278" cy="88" r="18" fill="none" stroke="#e0922f" stroke-width="1.5" opacity="0.3">
+              <animate attributeName="r" values="18;28;18" dur="3s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0.3;0;0.3" dur="3s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="582" cy="120" r="16" fill="none" stroke="#e0922f" stroke-width="1.5" opacity="0.25">
+              <animate attributeName="r" values="16;26;16" dur="2.8s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0.25;0;0.25" dur="2.8s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="362" cy="148" r="16" fill="none" stroke="#e0922f" stroke-width="1.5" opacity="0.25">
+              <animate attributeName="r" values="16;26;16" dur="3.2s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0.25;0;0.25" dur="3.2s" repeatCount="indefinite"/>
+            </circle>
+          </svg>
+        </div>
+        <div class="map-legend">
+          <div class="ml-item"><div class="ml-dot" style="background:#e0922f;opacity:.9"></div>Major cluster (&gt;300)</div>
+          <div class="ml-item"><div class="ml-dot" style="background:#e0922f;opacity:.72"></div>Mid cluster (100–300)</div>
+          <div class="ml-item"><div class="ml-dot" style="background:#e0922f;opacity:.5"></div>Small (&lt;100)</div>
+        </div>
+      </div>
+
+      <!-- Top Projects -->
+      <div class="panel">
+        <div class="panel-title">Top projects</div>
+        <div class="proj-item">
+          <div class="proj-rank">1</div>
+          <div class="proj-body">
+            <div class="proj-name">NEOM Green Hydrogen — Oxagon</div>
+            <div class="proj-tags">
+              <span class="ptag pt-b">H₂</span>
+              <span class="ptag pt-a">FID</span>
+            </div>
+            <div class="proj-cap">2.2 Mtpa · $8.4B · Saudi Arabia</div>
+          </div>
+        </div>
+        <div class="proj-item">
+          <div class="proj-rank">2</div>
+          <div class="proj-body">
+            <div class="proj-name">Air Products NEOM Ammonia</div>
+            <div class="proj-tags">
+              <span class="ptag pt-p">NH₃</span>
+              <span class="ptag pt-a">Construction</span>
+            </div>
+            <div class="proj-cap">1.2 Mtpa · $5.0B · Saudi Arabia</div>
+          </div>
+        </div>
+        <div class="proj-item">
+          <div class="proj-rank">3</div>
+          <div class="proj-body">
+            <div class="proj-name">ACWA Green Hydrogen — Jubail</div>
+            <div class="proj-tags">
+              <span class="ptag pt-b">H₂</span>
+              <span class="ptag pt-g">Operational</span>
+            </div>
+            <div class="proj-cap">1.0 Mtpa · $4.1B · Saudi Arabia</div>
+          </div>
+        </div>
+        <div class="proj-item">
+          <div class="proj-rank">4</div>
+          <div class="proj-body">
+            <div class="proj-name">Northern Lights e-Methanol</div>
+            <div class="proj-tags">
+              <span class="ptag pt-b">MeOH</span>
+              <span class="ptag pt-a">FID</span>
+            </div>
+            <div class="proj-cap">0.8 Mtpa · $1.6B · Denmark</div>
+          </div>
+        </div>
+        <div class="proj-item">
+          <div class="proj-rank">5</div>
+          <div class="proj-body">
+            <div class="proj-name">H2Magnum Green Ammonia</div>
+            <div class="proj-tags">
+              <span class="ptag pt-p">NH₃</span>
+              <span class="ptag pt-b">Feasibility</span>
+            </div>
+            <div class="proj-cap">0.7 Mtpa · $2.8B · Netherlands</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ACTION ROW -->
+    <div class="action-row">
+      <div class="ac">
+        <div class="ac-icon" style="background:#eef2ff;">
+          <svg viewBox="0 0 24 24" stroke="#2950d4"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </div>
+        <div>
+          <div class="ac-title">Project search</div>
+          <div class="ac-sub">Find by keyword, name or location</div>
+        </div>
+      </div>
+      <div class="ac">
+        <div class="ac-icon" style="background:#f4eeff;">
+          <svg viewBox="0 0 24 24" stroke="#6f42cc"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+        </div>
+        <div>
+          <div class="ac-title">Advanced filters</div>
+          <div class="ac-sub">Fuel, region, status, size</div>
+        </div>
+      </div>
+      <div class="ac">
+        <div class="ac-icon" style="background:#e8f7f0;">
+          <svg viewBox="0 0 24 24" stroke="#1a8a55"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <div>
+          <div class="ac-title">My projects <span class="ac-badge">12</span></div>
+          <div class="ac-sub">Your saved project list</div>
+        </div>
+      </div>
+      <div class="ac">
+        <div class="ac-icon" style="background:#fdf3e3;">
+          <svg viewBox="0 0 24 24" stroke="#b5701a"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
+        </div>
+        <div>
+          <div class="ac-title">Project compare</div>
+          <div class="ac-sub">Compare up to four projects</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRUSTED -->
+    <div class="trusted">
+      <div class="tr-lbl">Trusted by industry leaders</div>
+      <div class="tr-logos">
+        <span class="tr-logo">MAERSK</span>
+        <span class="tr-logo">MOL</span>
+        <span class="tr-logo">TotalEnergies</span>
+        <span class="tr-logo">Equinor</span>
+        <span class="tr-logo">Yara</span>
+        <span class="tr-logo">Wärtsilä</span>
+        <span class="tr-logo">DNV</span>
+      </div>
+    </div>
+
+  </main>
+</div>
+</div>
+</body>
+</html>
