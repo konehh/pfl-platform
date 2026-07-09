@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>PFL — Analytics</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#f4f5f7;--card:#ffffff;--ink:#1a1d29;--ink2:#5b6075;--ink3:#9498ab;--line:#e8eaf0;--line2:#f0f1f5;--blue:#4f7cff;--blue-s:#eef2ff;--blue-i:#2950d4;--green:#2bb673;--green-s:#e8f7f0;--green-i:#1a8a55;--purple:#9b6dff;--purple-s:#f4eeff;--purple-i:#6f42cc;--amber:#e0922f;--amber-s:#fdf3e3;--amber-i:#b5701a;--coral:#f0654f;--coral-s:#fdecea;--coral-i:#c8472f;--r:12px;--sb:200px;--tn:48px;--tk:28px;}
+*{box-sizing:border-box;margin:0;padding:0;}html,body{height:100%;}
+body{font-family:Inter,sans-serif;background:var(--bg);color:var(--ink);font-size:13px;}
+.sb{position:fixed;top:0;left:0;bottom:0;width:var(--sb);background:var(--card);border-right:1px solid var(--line);display:flex;flex-direction:column;z-index:100;}
+.sb-logo{padding:14px 16px;border-bottom:1px solid var(--line);flex-shrink:0;}
+.sb-mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--blue),var(--purple));display:flex;align-items:center;justify-content:center;margin-bottom:8px;}
+.sb-mark svg{width:16px;height:16px;fill:none;stroke:#fff;stroke-width:2;}
+.sb-brand{font-family:Sora,sans-serif;font-size:14px;font-weight:700;color:var(--ink);}
+.sb-tag{font-size:10px;color:var(--ink3);margin-top:1px;}
+.sb-nav{flex:1;overflow-y:auto;padding:0;}
+.sb-item{display:flex;align-items:center;gap:9px;padding:9px 16px;font-size:13px;color:var(--ink2);border-bottom:1px solid var(--line2);transition:background .12s;text-decoration:none;}
+.sb-item:first-child{border-top:1px solid var(--line2);}
+.sb-item:hover{background:#f5f6ff;color:var(--ink);}
+.sb-item.active{background:var(--blue-s);color:var(--blue-i);font-weight:600;border-left:3px solid var(--blue);padding-left:13px;}
+.sb-item svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0;opacity:.75;}
+.sb-item.active svg{opacity:1;}
+.sb-foot{padding:14px;border-top:1px solid var(--line);flex-shrink:0;}
+.sb-unlock{background:linear-gradient(135deg,var(--blue-s),var(--purple-s));border:1px solid #dde3ff;border-radius:10px;padding:12px;}
+.sb-unlock h4{font-size:12px;font-weight:600;color:var(--ink);margin-bottom:3px;}
+.sb-unlock p{font-size:10.5px;color:var(--ink2);margin-bottom:10px;line-height:1.5;}
+.sb-unlock-btn{width:100%;padding:7px;background:var(--blue);color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;}
+.rc{margin-left:var(--sb);display:flex;flex-direction:column;min-height:100vh;}
+.tn{background:var(--card);border-bottom:1px solid var(--line);height:var(--tn);display:flex;align-items:center;padding:0 32px;position:sticky;top:0;z-index:99;flex-shrink:0;}
+.tn-links{display:flex;align-items:center;justify-content:center;gap:40px;flex:1;}
+.tn-link{font-size:13.5px;color:var(--ink2);cursor:pointer;font-weight:500;}
+.tn-actions{display:flex;align-items:center;gap:10px;}
+.btn-sec{padding:6px 18px;border:1px solid #dde3ff;border-radius:20px;font-size:12.5px;color:var(--ink);background:transparent;cursor:pointer;font-family:Inter,sans-serif;}
+.btn-pri{padding:6px 18px;border:none;border-radius:20px;font-size:12.5px;color:#fff;background:var(--blue);cursor:pointer;font-family:Inter,sans-serif;font-weight:600;}
+.sr{background:#f9fafc;border-bottom:1px solid var(--line);padding:8px 20px;flex-shrink:0;}
+.sr-inner{position:relative;}
+.sr-inner svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:var(--ink3);fill:none;stroke-width:2;}
+.sr-inner input{width:100%;height:32px;background:var(--card);border:1px solid #e2e5f5;border-radius:20px;padding:0 14px 0 34px;font-size:12.5px;color:var(--ink);font-family:Inter,sans-serif;outline:none;}
+.sr-inner input::placeholder{color:var(--ink3);}
+.tk{background:#f0f4ff;border-bottom:1px solid #dde3ff;height:var(--tk);display:flex;align-items:center;overflow:hidden;flex-shrink:0;}
+.tk-lbl{background:#f0f4ff;display:flex;align-items:center;gap:5px;padding:0 12px 0 16px;height:100%;flex-shrink:0;border-right:1px solid #dde3ff;z-index:2;}
+.tk-lbl::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--green);flex-shrink:0;animation:bl 2s infinite;}
+@keyframes bl{0%,100%{opacity:1;}50%{opacity:.2;}}
+.tk-lbl span{font-size:9.5px;font-weight:700;color:var(--blue-i);letter-spacing:.07em;text-transform:uppercase;}
+.tk-outer{flex:1;overflow:hidden;}
+.tk-track{display:flex;animation:tsc 55s linear infinite;white-space:nowrap;}
+@keyframes tsc{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+.ti{font-size:11px;color:var(--ink2);padding:0 24px;}
+.ti b{color:var(--green);font-weight:700;}
+.main{padding:16px 20px;display:flex;flex-direction:column;gap:14px;flex:1;}
+.ph{display:flex;align-items:flex-start;justify-content:space-between;}
+.ph-l .ph-mod{font-size:10.5px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px;}
+.ph-l h1{font-family:Sora,sans-serif;font-size:22px;font-weight:700;color:var(--ink);}
+.ph-l p{font-size:12.5px;color:var(--ink2);margin-top:4px;}
+.ph-r{display:flex;gap:8px;}
+.ph-btn{display:flex;align-items:center;gap:5px;padding:6px 13px;border:1px solid #e2e5f5;border-radius:8px;font-size:12px;color:var(--ink);background:var(--card);cursor:pointer;font-family:Inter,sans-serif;font-weight:500;}
+.ph-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;}
+.ph-btn-p{background:var(--blue);color:#fff;border-color:var(--blue);}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px;box-shadow:0 1px 3px rgba(26,29,41,.03);}
+.panel-title{font-size:10.5px;font-weight:700;color:var(--ink);text-transform:uppercase;letter-spacing:.07em;margin-bottom:14px;}
+.panel-title-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.panel-title-row .panel-title{margin-bottom:0;}
+.panel-link{font-size:11px;color:var(--blue);font-weight:600;cursor:pointer;text-decoration:none;}
+.tag{font-size:10px;font-weight:600;padding:2px 7px;border-radius:5px;display:inline-block;}
+.tag-b{background:var(--blue-s);color:var(--blue-i);}.tag-g{background:var(--green-s);color:var(--green-i);}.tag-p{background:var(--purple-s);color:var(--purple-i);}.tag-a{background:var(--amber-s);color:var(--amber-i);}.tag-c{background:var(--coral-s);color:var(--coral-i);}
+.chain{display:flex;align-items:stretch;gap:0;overflow-x:auto;padding-bottom:4px;}
+.chain-node{flex-shrink:0;width:148px;border:1px solid var(--line);border-radius:10px;padding:14px 12px;background:var(--card);}
+.chain-node.cause{border-color:#c7d5ff;background:var(--blue-s);}
+.chain-node.phys{border-color:#e0d4ff;background:var(--purple-s);}
+.chain-node.fin{border-color:#f5d9b0;background:var(--amber-s);}
+.chain-node.risk{border-color:#f5c0b8;background:var(--coral-s);}
+.chain-node.eco{border-color:#b5dfc9;background:var(--green-s);}
+.chain-node-num{width:22px;height:22px;border-radius:50%;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-bottom:8px;}
+.chain-node-title{font-size:12px;font-weight:700;color:var(--ink);margin-bottom:5px;line-height:1.3;}
+.chain-node-sub{font-size:10.5px;color:var(--ink2);line-height:1.45;margin-bottom:8px;}
+.chain-node-metric{font-size:11px;font-weight:700;}
+.chain-node-tag{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-top:6px;}
+.chain-arrow{font-size:20px;color:var(--ink3);padding:0 5px;display:flex;align-items:center;flex-shrink:0;}
+.grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;}
+.grid-2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;}
+.grid-1-2{display:grid;grid-template-columns:280px minmax(0,1fr);gap:14px;}
+.stat-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--line2);}
+.stat-row:last-child{border-bottom:none;}
+.stat-lbl{font-size:12px;color:var(--ink2);}
+.stat-val{font-size:12px;font-weight:600;color:var(--ink);}
+.stat-val.g{color:var(--green-i);}.stat-val.r{color:var(--coral-i);}.stat-val.a{color:var(--amber-i);}.stat-val.b{color:var(--blue-i);}
+.tbl{width:100%;border-collapse:collapse;}
+.tbl th{font-size:10px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.06em;padding:0 8px 8px 0;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap;}
+.tbl td{padding:8px 8px 8px 0;border-bottom:1px solid var(--line2);vertical-align:middle;font-size:12px;}
+.tbl tr:last-child td{border-bottom:none;}
+.note{background:var(--amber-s);border:1px solid #f5d9b0;border-radius:8px;padding:10px 12px;font-size:11px;color:var(--amber-i);line-height:1.5;margin-bottom:14px;}
+.trusted{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px 24px;}
+.tr-lbl{font-size:10px;font-weight:700;color:var(--ink3);text-align:center;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;}
+.tr-logos{display:flex;align-items:center;justify-content:center;gap:32px;flex-wrap:wrap;}
+.tr-logo{font-family:Sora,sans-serif;font-size:12px;font-weight:700;color:var(--ink3);opacity:.45;}
+.impact-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;}
+.impact-item{background:var(--bg);border:1px solid var(--line2);border-radius:9px;padding:10px 12px;}
+.impact-lbl{font-size:10px;color:var(--ink3);margin-bottom:4px;}
+.impact-val{font-family:Sora,sans-serif;font-size:15px;font-weight:700;}
+.impact-calc{font-size:9.5px;color:var(--ink3);margin-top:2px;line-height:1.4;}
+</style>
+</head>
+<body>
+<aside class="sb">
+  <div class="sb-logo"><div class="sb-mark"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div><div class="sb-brand">PFL</div><div class="sb-tag">Project Finance Library</div></div>
+  <nav class="sb-nav">
+    <a class="sb-item" href="index.html"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Home</a>
+    <a class="sb-item" href="projects.html"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>Projects</a>
+    <a class="sb-item" href="finance.html"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Finance</a>
+    <a class="sb-item" href="fuels.html"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>Fuels</a>
+    <a class="sb-item" href="supplychain.html"><svg viewBox="0 0 24 24"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>Supply Chain</a>
+    <a class="sb-item active" href="analytics.html"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Analytics</a>
+    <a class="sb-item" href="scenarios.html"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Scenarios</a>
+    <a class="sb-item" href="news.html"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>News &amp; Insights</a>
+  </nav>
+  <div class="sb-foot"><div class="sb-unlock"><h4>Unlock full access</h4><p>Deep data. Powerful tools. Smarter decisions.</p><button class="sb-unlock-btn">Request access</button></div></div>
+</aside>
+<div class="rc">
+  <nav class="tn"><div class="tn-links"><span class="tn-link">About</span><span class="tn-link">Insights</span><span class="tn-link">Contact</span></div><div class="tn-actions"><button class="btn-sec">Log in</button><button class="btn-pri">Request access</button></div></nav>
+  <div class="sr"><div class="sr-inner"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input type="text" placeholder="Search impact chains, scenarios, metrics…"/></div></div>
+  <div class="tk"><div class="tk-lbl"><span>Latest</span></div><div class="tk-outer"><div class="tk-track"><span class="ti"><b>+</b>Northern Lights e-Methanol reaches FID — €820M debt confirmed</span><span class="ti"><b>+</b>BNP Paribas commits $1.2B to green hydrogen portfolio</span><span class="ti"><b>+</b>DSCR alert: two projects flagged below 1.2x covenant threshold</span><span class="ti"><b>+</b>IFC approves $340M concessional loan for Patagonia green ammonia</span><span class="ti"><b>+</b>Northern Lights e-Methanol reaches FID — €820M debt confirmed</span><span class="ti"><b>+</b>BNP Paribas commits $1.2B to green hydrogen portfolio</span><span class="ti"><b>+</b>DSCR alert: two projects flagged below 1.2x covenant threshold</span><span class="ti"><b>+</b>IFC approves $340M concessional loan for Patagonia green ammonia</span></div></div></div>
+
+  <main class="main">
+    <div class="ph">
+      <div class="ph-l"><div class="ph-mod">Module 6</div><h1>Analytics</h1><p>Understand cause and consequence across the physical and financial ecosystem.</p></div>
+      <div class="ph-r">
+        <button class="ph-btn"><svg viewBox="0 0 24 24"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>Impact Scenario: Project Delay Case</button>
+        <button class="ph-btn ph-btn-p"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Run Analysis</button>
+      </div>
+    </div>
+
+    <div class="note">⚠ All impact metrics are illustrative models. Calculations are shown in full below each metric. Formulas: IDC = Debt × Rate × Delay (years). DSCR = Net Revenue ÷ Debt Service. IRR impact estimated via DCF delay. Refinancing risk = logistic model on DSCR drop + market conditions.</div>
+
+    <!-- FULL IMPACT CHAIN -->
+    <div class="panel">
+      <div class="panel-title-row">
+        <div class="panel-title">Impact chain — Project Delay Case</div>
+        <div style="font-size:11px;color:var(--ink3);">Causal sequence: how a delay propagates through physical and financial layers</div>
+      </div>
+      <div class="chain">
+        <div class="chain-node cause">
+          <div class="chain-node-num" style="background:var(--blue-i);color:#fff;">1</div>
+          <div class="chain-node-title">Project Delay</div>
+          <div class="chain-node-sub">FID delayed by 6 months across 12 e-methanol projects</div>
+          <div class="chain-node-metric" style="color:var(--blue-i);">+6 months</div>
+          <div class="chain-node-tag" style="color:var(--blue-i);">TRIGGER</div>
+        </div>
+        <div class="chain-arrow">→</div>
+        <div class="chain-node phys">
+          <div class="chain-node-num" style="background:var(--purple-i);color:#fff;">2</div>
+          <div class="chain-node-title">Supply Reduced</div>
+          <div class="chain-node-sub">5.6 Mtpa delayed capacity enters market later</div>
+          <div class="chain-node-metric" style="color:var(--purple-i);">−3.2 Mtpa by 2030</div>
+          <div class="chain-node-tag" style="color:var(--purple-i);">PHYSICAL</div>
+        </div>
+        <div class="chain-arrow">→</div>
+        <div class="chain-node fin">
+          <div class="chain-node-num" style="background:var(--amber-i);color:#fff;">3</div>
+          <div class="chain-node-title">Cost Increase</div>
+          <div class="chain-node-sub">IDC accrues on $800M avg debt at 6% for 0.5yr</div>
+          <div class="chain-node-metric" style="color:var(--amber-i);">+$24M per project</div>
+          <div class="chain-node-tag" style="color:var(--amber-i);">FINANCIAL</div>
+        </div>
+        <div class="chain-arrow">→</div>
+        <div class="chain-node fin">
+          <div class="chain-node-num" style="background:var(--amber-i);color:#fff;">4</div>
+          <div class="chain-node-title">Revenue Delayed</div>
+          <div class="chain-node-sub">First offtake revenue deferred 16 months total</div>
+          <div class="chain-node-metric" style="color:var(--amber-i);">−$156M/project</div>
+          <div class="chain-node-tag" style="color:var(--amber-i);">FINANCIAL</div>
+        </div>
+        <div class="chain-arrow">→</div>
+        <div class="chain-node risk">
+          <div class="chain-node-num" style="background:var(--coral-i);color:#fff;">5</div>
+          <div class="chain-node-title">DSCR Falls</div>
+          <div class="chain-node-sub">Net revenue drops, debt service unchanged</div>
+          <div class="chain-node-metric" style="color:var(--coral-i);">1.42x → 1.11x</div>
+          <div class="chain-node-tag" style="color:var(--coral-i);">RISK</div>
+        </div>
+        <div class="chain-arrow">→</div>
+        <div class="chain-node risk">
+          <div class="chain-node-num" style="background:var(--coral-i);color:#fff;">6</div>
+          <div class="chain-node-title">IRR Compressed</div>
+          <div class="chain-node-sub">Equity cashflows delayed, exit value unchanged</div>
+          <div class="chain-node-metric" style="color:var(--coral-i);">13.8% → 10.6%</div>
+          <div class="chain-node-tag" style="color:var(--coral-i);">RISK</div>
+        </div>
+        <div class="chain-arrow">→</div>
+        <div class="chain-node risk">
+          <div class="chain-node-num" style="background:var(--coral-i);color:#fff;">7</div>
+          <div class="chain-node-title">Refi Risk</div>
+          <div class="chain-node-sub">DSCR breach triggers lender review, refi probability rises</div>
+          <div class="chain-node-metric" style="color:var(--coral-i);">62% probability</div>
+          <div class="chain-node-tag" style="color:var(--coral-i);">RISK</div>
+        </div>
+        <div class="chain-arrow">→</div>
+        <div class="chain-node eco">
+          <div class="chain-node-num" style="background:var(--green-i);color:#fff;">8</div>
+          <div class="chain-node-title">New Finance Drops</div>
+          <div class="chain-node-sub">Risk appetite for similar projects falls ecosystem-wide</div>
+          <div class="chain-node-metric" style="color:var(--green-i);">−34% appetite</div>
+          <div class="chain-node-tag" style="color:var(--green-i);">ECOSYSTEM</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CALCULATION BREAKDOWN -->
+    <div class="grid-3">
+      <div class="panel">
+        <div class="panel-title">IDC calculation</div>
+        <div style="font-size:10.5px;color:var(--ink3);line-height:1.6;margin-bottom:12px;">Interest During Construction accrues on drawn debt during the delay period.</div>
+        <div style="background:var(--line2);border-radius:8px;padding:12px;font-family:monospace;font-size:11px;color:var(--ink2);margin-bottom:12px;">
+          IDC = Debt × Rate × Delay<br>
+          = $800M × 6% × 0.5yr<br>
+          <strong style="color:var(--amber-i);">= $24M per project</strong><br><br>
+          Total (12 projects):<br>
+          <strong style="color:var(--amber-i);">= $288M aggregate IDC</strong>
+        </div>
+        <div class="stat-row"><span class="stat-lbl">Avg drawn debt</span><span class="stat-val">$800M</span></div>
+        <div class="stat-row"><span class="stat-lbl">Assumed rate (SOFR+245bp)</span><span class="stat-val">6.0%</span></div>
+        <div class="stat-row"><span class="stat-lbl">Delay period</span><span class="stat-val">0.5 years</span></div>
+        <div class="stat-row"><span class="stat-lbl">IDC per project</span><span class="stat-val a">+$24M</span></div>
+        <div class="stat-row"><span class="stat-lbl">Total IDC (12 projects)</span><span class="stat-val a">+$288M</span></div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">DSCR calculation</div>
+        <div style="font-size:10.5px;color:var(--ink3);line-height:1.6;margin-bottom:12px;">Debt Service Coverage Ratio measures ability to service debt from project revenue.</div>
+        <div style="background:var(--line2);border-radius:8px;padding:12px;font-family:monospace;font-size:11px;color:var(--ink2);margin-bottom:12px;">
+          DSCR = Net Revenue ÷ Debt Service<br><br>
+          Base case:<br>
+          = $142M ÷ $100M = <strong style="color:var(--green-i);">1.42x</strong><br><br>
+          Delay case (revenue deferred):<br>
+          = $111M ÷ $100M = <strong style="color:var(--coral-i);">1.11x</strong><br><br>
+          Covenant min: 1.20x<br>
+          <strong style="color:var(--coral-i);">→ BREACH</strong>
+        </div>
+        <div class="stat-row"><span class="stat-lbl">Base net revenue</span><span class="stat-val">$142M/yr</span></div>
+        <div class="stat-row"><span class="stat-lbl">Delay-adjusted revenue</span><span class="stat-val r">$111M/yr</span></div>
+        <div class="stat-row"><span class="stat-lbl">Annual debt service</span><span class="stat-val">$100M/yr</span></div>
+        <div class="stat-row"><span class="stat-lbl">Base DSCR</span><span class="stat-val g">1.42x</span></div>
+        <div class="stat-row"><span class="stat-lbl">Delay DSCR</span><span class="stat-val r">1.11x ↓ BREACH</span></div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">IRR impact calculation</div>
+        <div style="font-size:10.5px;color:var(--ink3);line-height:1.6;margin-bottom:12px;">Equity IRR calculated via DCF. Delay pushes first cashflow, reducing time-value of returns.</div>
+        <div style="background:var(--line2);border-radius:8px;padding:12px;font-family:monospace;font-size:11px;color:var(--ink2);margin-bottom:12px;">
+          Base IRR = 13.8%<br>
+          (DCF, 20yr project life)<br><br>
+          Delay: +16 months to<br>
+          first positive cashflow<br><br>
+          IRR sensitivity:<br>
+          ≈ −0.2pp per month delay<br><br>
+          Delay IRR:<br>
+          13.8% − (16 × 0.2pp)<br>
+          <strong style="color:var(--coral-i);">= 10.6%</strong>
+        </div>
+        <div class="stat-row"><span class="stat-lbl">Base equity IRR</span><span class="stat-val g">13.8%</span></div>
+        <div class="stat-row"><span class="stat-lbl">Delay to first cashflow</span><span class="stat-val a">+16 months</span></div>
+        <div class="stat-row"><span class="stat-lbl">IRR sensitivity per month</span><span class="stat-val">−0.2pp</span></div>
+        <div class="stat-row"><span class="stat-lbl">Total IRR compression</span><span class="stat-val r">−3.2pp</span></div>
+        <div class="stat-row"><span class="stat-lbl">Delay equity IRR</span><span class="stat-val r">10.6%</span></div>
+      </div>
+    </div>
+
+    <!-- WINNERS / LOSERS -->
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-title">Top winners — who benefits</div>
+        <table class="tbl">
+          <thead><tr><th>Entity</th><th>Type</th><th>Benefit (USD)</th><th>Why</th></tr></thead>
+          <tbody>
+            <tr><td style="font-weight:600;">Maersk</td><td><span class="tag tag-b">Shipowner</span></td><td style="color:var(--green-i);font-weight:700;">+$312M</td><td style="color:var(--ink2);">Locked-in supply via early offtake</td></tr>
+            <tr><td style="font-weight:600;">Port of Rotterdam</td><td><span class="tag tag-g">Port</span></td><td style="color:var(--green-i);font-weight:700;">+$178M</td><td style="color:var(--ink2);">Pooling hub concentration rises</td></tr>
+            <tr><td style="font-weight:600;">Compliance brokers</td><td><span class="tag tag-p">Service</span></td><td style="color:var(--green-i);font-weight:700;">+$96M</td><td style="color:var(--ink2);">Higher compliance complexity demand</td></tr>
+            <tr><td style="font-weight:600;">Existing producers</td><td><span class="tag tag-a">Producer</span></td><td style="color:var(--green-i);font-weight:700;">+$54M</td><td style="color:var(--ink2);">Price uplift from supply tightness</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="panel">
+        <div class="panel-title">Top losers — who is hurt</div>
+        <table class="tbl">
+          <thead><tr><th>Entity</th><th>Type</th><th>Loss (USD)</th><th>Why</th></tr></thead>
+          <tbody>
+            <tr><td style="font-weight:600;">BNP Paribas</td><td><span class="tag tag-b">Lender</span></td><td style="color:var(--coral-i);font-weight:700;">−$214M</td><td style="color:var(--ink2);">DSCR breach on 3 facilities, IDC rise</td></tr>
+            <tr><td style="font-weight:600;">Project developers</td><td><span class="tag tag-c">Developer</span></td><td style="color:var(--coral-i);font-weight:700;">−$156M</td><td style="color:var(--ink2);">Revenue deferred, cost increase</td></tr>
+            <tr><td style="font-weight:600;">EU grant utilisation</td><td><span class="tag tag-a">Grant</span></td><td style="color:var(--coral-i);font-weight:700;">−$72M</td><td style="color:var(--ink2);">Disbursement delayed, milestones missed</td></tr>
+            <tr><td style="font-weight:600;">Equity investors</td><td><span class="tag tag-p">Equity</span></td><td style="color:var(--coral-i);font-weight:700;">−$38M</td><td style="color:var(--ink2);">IRR compression 13.8% → 10.6%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="trusted"><div class="tr-lbl">Trusted by industry leaders</div><div class="tr-logos"><span class="tr-logo">MAERSK</span><span class="tr-logo">MOL</span><span class="tr-logo">TotalEnergies</span><span class="tr-logo">Equinor</span><span class="tr-logo">Yara</span><span class="tr-logo">Wärtsilä</span><span class="tr-logo">DNV</span></div></div>
+  </main>
+</div>
+</body>
+</html>

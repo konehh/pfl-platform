@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>PFL — News &amp; Insights</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#f4f5f7;--card:#fff;--ink:#1a1d29;--ink2:#5b6075;--ink3:#9498ab;--line:#e8eaf0;--line2:#f0f1f5;--blue:#4f7cff;--blue-s:#eef2ff;--blue-i:#2950d4;--green:#2bb673;--green-s:#e8f7f0;--green-i:#1a8a55;--purple:#9b6dff;--purple-s:#f4eeff;--purple-i:#6f42cc;--amber:#e0922f;--amber-s:#fdf3e3;--amber-i:#b5701a;--coral:#f0654f;--coral-s:#fdecea;--coral-i:#c8472f;--r:12px;--sb:200px;}
+*{box-sizing:border-box;margin:0;padding:0;}html,body{height:100%;}
+body{font-family:Inter,sans-serif;background:var(--bg);color:var(--ink);font-size:13px;}
+.sb{position:fixed;top:0;left:0;bottom:0;width:var(--sb);background:var(--card);border-right:1px solid var(--line);display:flex;flex-direction:column;z-index:100;}
+.sb-logo{padding:14px 16px;border-bottom:1px solid var(--line);flex-shrink:0;}
+.sb-mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--blue),var(--purple));display:flex;align-items:center;justify-content:center;margin-bottom:8px;}
+.sb-mark svg{width:16px;height:16px;fill:none;stroke:#fff;stroke-width:2;}
+.sb-brand{font-family:Sora,sans-serif;font-size:14px;font-weight:700;color:var(--ink);}
+.sb-tag{font-size:10px;color:var(--ink3);margin-top:1px;}
+.sb-nav{flex:1;overflow-y:auto;}
+.sb-item{display:flex;align-items:center;gap:9px;padding:9px 16px;font-size:13px;color:var(--ink2);border-bottom:1px solid var(--line2);text-decoration:none;transition:background .12s;}
+.sb-item:first-child{border-top:1px solid var(--line2);}
+.sb-item:hover{background:#f5f6ff;color:var(--ink);}
+.sb-item.active{background:var(--blue-s);color:var(--blue-i);font-weight:600;border-left:3px solid var(--blue);padding-left:13px;}
+.sb-item svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0;opacity:.75;}
+.sb-item.active svg{opacity:1;}
+.sb-foot{padding:14px;border-top:1px solid var(--line);flex-shrink:0;}
+.sb-unlock{background:linear-gradient(135deg,var(--blue-s),var(--purple-s));border:1px solid #dde3ff;border-radius:10px;padding:12px;}
+.sb-unlock h4{font-size:12px;font-weight:600;color:var(--ink);margin-bottom:3px;}
+.sb-unlock p{font-size:10.5px;color:var(--ink2);margin-bottom:10px;line-height:1.5;}
+.sb-unlock-btn{width:100%;padding:7px;background:var(--blue);color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;}
+.rc{margin-left:var(--sb);display:flex;flex-direction:column;min-height:100vh;}
+.tn{background:var(--card);border-bottom:1px solid var(--line);height:48px;display:flex;align-items:center;padding:0 32px;position:sticky;top:0;z-index:99;flex-shrink:0;}
+.tn-links{display:flex;align-items:center;justify-content:center;gap:40px;flex:1;}
+.tn-link{font-size:13.5px;color:var(--ink2);cursor:pointer;font-weight:500;}
+.tn-actions{display:flex;gap:10px;}
+.btn-sec{padding:6px 18px;border:1px solid #dde3ff;border-radius:20px;font-size:12.5px;color:var(--ink);background:transparent;cursor:pointer;font-family:Inter,sans-serif;}
+.btn-pri{padding:6px 18px;border:none;border-radius:20px;font-size:12.5px;color:#fff;background:var(--blue);cursor:pointer;font-family:Inter,sans-serif;font-weight:600;}
+.sr{background:#f9fafc;border-bottom:1px solid var(--line);padding:8px 20px;flex-shrink:0;}
+.sr-inner{position:relative;}
+.sr-inner svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:var(--ink3);fill:none;stroke-width:2;}
+.sr-inner input{width:100%;height:32px;background:var(--card);border:1px solid #e2e5f5;border-radius:20px;padding:0 14px 0 34px;font-size:12.5px;color:var(--ink);font-family:Inter,sans-serif;outline:none;}
+.sr-inner input::placeholder{color:var(--ink3);}
+.tk{background:#f0f4ff;border-bottom:1px solid #dde3ff;height:28px;display:flex;align-items:center;overflow:hidden;flex-shrink:0;}
+.tk-lbl{display:flex;align-items:center;gap:5px;padding:0 12px 0 16px;height:100%;flex-shrink:0;border-right:1px solid #dde3ff;}
+.tk-lbl::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--green);animation:bl 2s infinite;}
+@keyframes bl{0%,100%{opacity:1;}50%{opacity:.2;}}
+.tk-lbl span{font-size:9.5px;font-weight:700;color:var(--blue-i);letter-spacing:.07em;text-transform:uppercase;}
+.tk-outer{flex:1;overflow:hidden;}
+.tk-track{display:flex;animation:tsc 55s linear infinite;white-space:nowrap;}
+@keyframes tsc{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+.ti{font-size:11px;color:var(--ink2);padding:0 24px;}
+.ti b{color:var(--green);font-weight:700;}
+.main{padding:16px 20px;display:flex;flex-direction:column;gap:14px;flex:1;}
+.ph{display:flex;align-items:flex-start;justify-content:space-between;}
+.ph-mod{font-size:10.5px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px;}
+.ph h1{font-family:Sora,sans-serif;font-size:22px;font-weight:700;color:var(--ink);}
+.ph p{font-size:12.5px;color:var(--ink2);margin-top:4px;}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px;box-shadow:0 1px 3px rgba(26,29,41,.03);}
+.panel-title{font-size:10.5px;font-weight:700;color:var(--ink);text-transform:uppercase;letter-spacing:.07em;margin-bottom:14px;}
+.panel-title-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.panel-title-row .panel-title{margin-bottom:0;}
+.panel-link{font-size:11px;color:var(--blue);font-weight:600;text-decoration:none;}
+.grid-2{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:14px;}
+.grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;}
+.tag{font-size:10px;font-weight:600;padding:2px 7px;border-radius:5px;display:inline-block;}
+.tag-b{background:var(--blue-s);color:var(--blue-i);}.tag-g{background:var(--green-s);color:var(--green-i);}.tag-p{background:var(--purple-s);color:var(--purple-i);}.tag-a{background:var(--amber-s);color:var(--amber-i);}.tag-c{background:var(--coral-s);color:var(--coral-i);}
+/* News cards */
+.news-tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+.news-tab{font-size:11.5px;padding:5px 12px;border-radius:20px;cursor:pointer;border:1px solid var(--line);color:var(--ink2);background:transparent;}
+.news-tab.active{background:var(--blue);color:#fff;border-color:var(--blue);font-weight:600;}
+.news-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;}
+.news-card{background:var(--bg);border:1px solid var(--line2);border-radius:10px;overflow:hidden;cursor:pointer;transition:border-color .15s;}
+.news-card:hover{border-color:var(--blue);}
+.news-card-img{height:80px;background:linear-gradient(135deg,var(--blue-s),var(--purple-s));display:flex;align-items:center;justify-content:center;}
+.news-card-img svg{width:28px;height:28px;fill:none;stroke:var(--blue-i);stroke-width:1.5;opacity:.5;}
+.news-card-body{padding:10px 12px;}
+.news-card-meta{display:flex;align-items:center;gap:6px;margin-bottom:6px;}
+.news-card-date{font-size:10px;color:var(--ink3);}
+.news-card-title{font-size:12px;font-weight:600;color:var(--ink);line-height:1.4;margin-bottom:5px;}
+.news-card-sub{font-size:10.5px;color:var(--ink2);line-height:1.5;}
+/* Insights */
+.insight-item{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--line2);}
+.insight-item:last-child{border-bottom:none;}
+.insight-icon{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.insight-icon svg{width:18px;height:18px;fill:none;stroke-width:2;}
+.insight-tag{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;}
+.insight-title{font-size:12.5px;font-weight:600;color:var(--ink);line-height:1.3;margin-bottom:3px;}
+.insight-meta{font-size:10.5px;color:var(--ink3);}
+/* Sidebar panels */
+.stat-row{display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--line2);}
+.stat-row:last-child{border-bottom:none;}
+.stat-lbl{font-size:12px;color:var(--ink2);}
+.stat-val{font-size:12px;font-weight:600;color:var(--ink);}
+.trend-row{display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--line2);font-size:12px;}
+.trend-row:last-child{border-bottom:none;}
+.trend-lbl{color:var(--ink2);}
+.trend-val{font-weight:600;color:var(--green-i);}
+.trusted{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px 24px;}
+.tr-lbl{font-size:10px;font-weight:700;color:var(--ink3);text-align:center;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;}
+.tr-logos{display:flex;align-items:center;justify-content:center;gap:32px;flex-wrap:wrap;}
+.tr-logo{font-family:Sora,sans-serif;font-size:12px;font-weight:700;color:var(--ink3);opacity:.45;}
+</style>
+</head>
+<body>
+<aside class="sb">
+  <div class="sb-logo"><div class="sb-mark"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div><div class="sb-brand">PFL</div><div class="sb-tag">Project Finance Library</div></div>
+  <nav class="sb-nav">
+    <a class="sb-item" href="index.html"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Home</a>
+    <a class="sb-item" href="projects.html"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>Projects</a>
+    <a class="sb-item" href="finance.html"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Finance</a>
+    <a class="sb-item" href="fuels.html"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>Fuels</a>
+    <a class="sb-item" href="supplychain.html"><svg viewBox="0 0 24 24"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>Supply Chain</a>
+    <a class="sb-item" href="analytics.html"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Analytics</a>
+    <a class="sb-item" href="scenarios.html"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Scenarios</a>
+    <a class="sb-item active" href="news.html"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>News &amp; Insights</a>
+  </nav>
+  <div class="sb-foot"><div class="sb-unlock"><h4>Unlock full access</h4><p>Deep data. Powerful tools. Smarter decisions.</p><button class="sb-unlock-btn">Request access</button></div></div>
+</aside>
+<div class="rc">
+  <nav class="tn"><div class="tn-links"><span class="tn-link">About</span><span class="tn-link">Insights</span><span class="tn-link">Contact</span></div><div class="tn-actions"><button class="btn-sec">Log in</button><button class="btn-pri">Request access</button></div></nav>
+  <div class="sr"><div class="sr-inner"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input type="text" placeholder="Search news, insights, topics…"/></div></div>
+  <div class="tk"><div class="tk-lbl"><span>Latest</span></div><div class="tk-outer"><div class="tk-track"><span class="ti"><b>+</b>Northern Lights e-Methanol reaches FID — €820M debt confirmed</span><span class="ti"><b>+</b>BNP Paribas commits $1.2B to green hydrogen portfolio</span><span class="ti"><b>+</b>DSCR alert: two projects flagged below 1.2x covenant threshold</span><span class="ti"><b>+</b>IFC approves $340M concessional loan for Patagonia green ammonia</span><span class="ti"><b>+</b>Northern Lights e-Methanol reaches FID — €820M debt confirmed</span><span class="ti"><b>+</b>BNP Paribas commits $1.2B to green hydrogen portfolio</span><span class="ti"><b>+</b>DSCR alert: two projects flagged below 1.2x covenant threshold</span><span class="ti"><b>+</b>IFC approves $340M concessional loan for Patagonia green ammonia</span></div></div></div>
+  <main class="main">
+    <div class="ph">
+      <div>
+        <div class="ph-mod">Module 8</div>
+        <h1>News &amp; Insights</h1>
+        <p>Curated intelligence on the energy transition fuels and finance ecosystem.</p>
+      </div>
+    </div>
+
+    <!-- Latest news -->
+    <div class="panel">
+      <div class="panel-title-row">
+        <div class="panel-title">Latest news</div>
+        <a class="panel-link" href="#">View all →</a>
+      </div>
+      <div class="news-tabs">
+        <div class="news-tab active">All News</div>
+        <div class="news-tab">Projects</div>
+        <div class="news-tab">Finance</div>
+        <div class="news-tab">Policy &amp; Regulation</div>
+        <div class="news-tab">Technology</div>
+        <div class="news-tab">Markets</div>
+      </div>
+      <div class="news-grid">
+        <div class="news-card">
+          <div class="news-card-img"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></div>
+          <div class="news-card-body">
+            <div class="news-card-meta"><span class="tag tag-b">Projects</span><span class="news-card-date">Jul 4, 2026</span></div>
+            <div class="news-card-title">Northern Lights e-Methanol secures €820M debt facility at financial close</div>
+            <div class="news-card-sub">BNP Paribas and Societe Generale lead the senior tranche at SOFR+260bp over 18-year tenor.</div>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="news-card-img" style="background:linear-gradient(135deg,var(--green-s),var(--blue-s));"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+          <div class="news-card-body">
+            <div class="news-card-meta"><span class="tag tag-g">Finance</span><span class="news-card-date">Jul 3, 2026</span></div>
+            <div class="news-card-title">IFC approves $340M concessional loan for Patagonia green ammonia project</div>
+            <div class="news-card-sub">Loan priced at SOFR+180bp — 65bp inside commercial rates — reflecting DFI climate mandate.</div>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="news-card-img" style="background:linear-gradient(135deg,var(--amber-s),var(--coral-s));"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+          <div class="news-card-body">
+            <div class="news-card-meta"><span class="tag tag-a">Policy</span><span class="news-card-date">Jul 2, 2026</span></div>
+            <div class="news-card-title">EU FuelEU Maritime enforcement clarified — pooling mechanism opens to third-party operators</div>
+            <div class="news-card-sub">New guidance confirms pooling demand will rise as non-EU flagged vessels seek compliance flexibility.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Insights + sidebar -->
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-title-row">
+          <div class="panel-title">Insights</div>
+          <a class="panel-link" href="#">View all →</a>
+        </div>
+        <div class="insight-item">
+          <div class="insight-icon" style="background:var(--blue-s);"><svg viewBox="0 0 24 24" stroke="var(--blue-i)"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+          <div>
+            <div class="insight-tag" style="color:var(--blue-i);">Finance insight</div>
+            <div class="insight-title">Why DSCR compression is the hidden risk in the e-methanol pipeline</div>
+            <div class="insight-meta">James Walker · Senior Analyst · Jun 30, 2026 · 6 min read</div>
+          </div>
+        </div>
+        <div class="insight-item">
+          <div class="insight-icon" style="background:var(--purple-s);"><svg viewBox="0 0 24 24" stroke="var(--purple-i)"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div>
+          <div>
+            <div class="insight-tag" style="color:var(--purple-i);">Technology insight</div>
+            <div class="insight-title">Electrolyser cost curves: what happens after 2030 when subsidies run out</div>
+            <div class="insight-meta">Priya Nair · Tech Analyst · Jun 28, 2026 · 7 min read</div>
+          </div>
+        </div>
+        <div class="insight-item">
+          <div class="insight-icon" style="background:var(--amber-s);"><svg viewBox="0 0 24 24" stroke="var(--amber-i)"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div>
+          <div>
+            <div class="insight-tag" style="color:var(--amber-i);">Policy insight</div>
+            <div class="insight-title">How governments are using grant exposure to de-risk green hydrogen debt</div>
+            <div class="insight-meta">Lukas Meyer · Policy Analyst · Jun 26, 2026 · 5 min read</div>
+          </div>
+        </div>
+        <div class="insight-item">
+          <div class="insight-icon" style="background:var(--green-s);"><svg viewBox="0 0 24 24" stroke="var(--green-i)"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+          <div>
+            <div class="insight-tag" style="color:var(--green-i);">Investment insight</div>
+            <div class="insight-title">Where smart money is going in 2026 — infrastructure funds vs corporate equity</div>
+            <div class="insight-meta">Sophie Grant · Investment Analyst · Jun 24, 2026 · 8 min read</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div class="panel">
+          <div class="panel-title">News snapshot</div>
+          <div class="stat-row"><span class="stat-lbl">News items (30D)</span><span class="stat-val">128</span></div>
+          <div class="stat-row"><span class="stat-lbl">Insights published</span><span class="stat-val">24</span></div>
+          <div class="stat-row"><span class="stat-lbl">Countries covered</span><span class="stat-val">78</span></div>
+          <div class="stat-row"><span class="stat-lbl">Finance stories</span><span class="stat-val">41</span></div>
+          <div class="stat-row"><span class="stat-lbl">Policy updates</span><span class="stat-val">18</span></div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">Trending topics</div>
+          <div class="trend-row"><span class="trend-lbl">e-Methanol bunkering</span><span class="trend-val">↑ 45%</span></div>
+          <div class="trend-row"><span class="trend-lbl">EU FuelEU Maritime</span><span class="trend-val">↑ 32%</span></div>
+          <div class="trend-row"><span class="trend-lbl">DSCR covenant breach</span><span class="trend-val">↑ 28%</span></div>
+          <div class="trend-row"><span class="trend-lbl">Green ammonia projects</span><span class="trend-val">↑ 27%</span></div>
+          <div class="trend-row"><span class="trend-lbl">DFI concessional loans</span><span class="trend-val">↑ 21%</span></div>
+        </div>
+        <div class="panel" style="background:var(--blue-s);border-color:#c7d5ff;">
+          <div style="font-size:11px;font-weight:700;color:var(--blue-i);margin-bottom:4px;">Get insights in your inbox</div>
+          <div style="font-size:10.5px;color:var(--ink2);margin-bottom:10px;line-height:1.5;">Weekly intelligence on projects, finance, and the transition economy.</div>
+          <input type="email" placeholder="Enter your email" style="width:100%;height:30px;border:1px solid #c7d5ff;border-radius:6px;padding:0 10px;font-size:12px;margin-bottom:8px;font-family:Inter,sans-serif;color:var(--ink);outline:none;"/>
+          <button style="width:100%;padding:7px;background:var(--blue);color:#fff;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;">Subscribe</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="trusted"><div class="tr-lbl">Trusted by industry leaders</div><div class="tr-logos"><span class="tr-logo">MAERSK</span><span class="tr-logo">MOL</span><span class="tr-logo">TotalEnergies</span><span class="tr-logo">Equinor</span><span class="tr-logo">Yara</span><span class="tr-logo">Wärtsilä</span><span class="tr-logo">DNV</span></div></div>
+  </main>
+</div>
+</body>
+</html>
